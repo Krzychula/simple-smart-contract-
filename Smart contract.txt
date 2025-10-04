@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract CryptoEnthusiasmTracker {
+    address public owner;
+    uint public totalReactions;
+
+    mapping(address => uint) public userReactions;
+
+    event ReactionAdded(address indexed user, uint totalReactions);
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function addReaction() public {
+        userReactions[msg.sender] += 1;
+        totalReactions += 1;
+
+        emit ReactionAdded(msg.sender, totalReactions);
+    }
+
+    function getUserReactions(address user) public view returns (uint) {
+        return userReactions[user];
+    }
+
+    function resetReactions() public {
+        require(msg.sender == owner, "Only owner can reset");
+        totalReactions = 0;
+    }
+}
+
